@@ -4,12 +4,14 @@
 
 # Famous Last Words: The Funniest Epitaph
 
-One original one-line epitaph: a man who finally finished his to-do list, only to find the last item was 'die' — and checked it off anyway.
+> Here lies a man who finally finished his to-do list — turns out the last item was 'die.' He checked it off anyway.
 
-## Run it
+He spent a lifetime chasing inbox zero for his chores, and in the end the list got the last laugh — or he did, by ticking the final box with his last breath. A one-line epitaph (114 characters) for the terminally productive.
+
+## How to run
 
 ```sh
 python3 main.py
 ```
 
-Writes one entry (114 characters, UTF-8) to `$MAKEFUN_OUTPUT_DIR/entry.txt`, or `/output/entry.txt` if that variable is unset. Python 3 standard library only, no network, deterministic.
+The script checks the epitaph is non-empty, no longer than 150 characters, free of line breaks, and UTF-8, then writes it with no trailing newline to `entry.txt` inside `$MAKEFUN_OUTPUT_DIR` (or `/output` if unset). Python 3, standard library only, no network, and byte-identical on repeat runs.

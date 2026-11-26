@@ -1,36 +1,38 @@
 #!/usr/bin/env python3
-"""Famous Last Words: The Funniest Epitaph entry.
-
-Writes one original entry (at most 150 characters) to
-$MAKEFUN_OUTPUT_DIR/entry.txt (or /output/entry.txt).
-
-One original one-line epitaph: a man who finally finished his to-do list, only to find the last item was 'die' — and checked it off anyway.
-"""
+# Famous Last Words: The Funniest Epitaph.
+# The epitaph: a man who at last finished his to-do list, only to
+# discover the final item was "die" — and, being thorough to the
+# end, he checked it off anyway. Productivity, taken to its grave.
+# Validation below enforces the 150-character, single-line rule.
 
 import os
 import sys
 
-ENTRY = "Here lies a man who finally finished his to-do list — turns out the last item was 'die.' He checked it off anyway."
+EPITAPH = "Here lies a man who finally finished his to-do list — turns out the last item was 'die.' He checked it off anyway."
+CHAR_LIMIT = 150
 
-MAX_CHARS = 150
 
-
-def main() -> int:
-    text = ENTRY.strip()
-    # Gate check: 1-150 characters, UTF-8, not only whitespace.
-    if not text or len(text) > MAX_CHARS:
-        print(f"entry invalid: {len(text)} chars", file=sys.stderr)
+def produce():
+    wording = EPITAPH.strip()
+    if wording == "":
+        print("epitaph rejected: nothing to write", file=sys.stderr)
         return 1
-    if "\n" in text or "\r" in text:
-        print("entry invalid: must be a single line", file=sys.stderr)
+    if len(wording) > CHAR_LIMIT:
+        print(
+            f"epitaph rejected: {len(wording)} characters exceeds {CHAR_LIMIT}",
+            file=sys.stderr,
+        )
         return 1
-    text.encode("utf-8")  # raises if not encodable, which it always is
-    out_dir = os.environ.get("MAKEFUN_OUTPUT_DIR") or "/output"
-    os.makedirs(out_dir, exist_ok=True)
-    with open(os.path.join(out_dir, "entry.txt"), "w", encoding="utf-8") as f:
-        f.write(text)
+    if "\n" in wording or "\r" in wording:
+        print("epitaph rejected: line breaks are not allowed", file=sys.stderr)
+        return 1
+    wording.encode("utf-8")
+    folder = os.environ.get("MAKEFUN_OUTPUT_DIR") or "/output"
+    os.makedirs(folder, exist_ok=True)
+    destination = os.path.join(folder, "entry.txt")
+    with open(destination, "w", encoding="utf-8") as stream:
+        stream.write(wording)
     return 0
 
 
-if __name__ == "__main__":
-    raise SystemExit(main())
+sys.exit(produce())
